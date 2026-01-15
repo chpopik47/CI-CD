@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ doctor.name }}</h2>
+  <p><small>{{ doctor.specialty }}</small></p>
+
+  <div class="card">
+    <form method="get" action="/ui/doctor/{{ doctor.id }}">
+      <label>Date:</label>
+      <input type="date" name="date" value="{{ date }}"/>
+      <button class="btn" type="submit">Load slots</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <form method="post" action="/ui/book">
+      <input type="hidden" name="doctor_id" value="{{ doctor.id }}"/>
+      <input type="hidden" name="date" value="{{ date }}"/>
+
+      <div class="row">
+        <div>
+          <label>Time:</label><br/>
+          <select name="time">
+            {% for s in slots %}
+              <option value="{{ s.time }}" {% if not s.available %}disabled{% endif %}>
+                {{ s.time }} {% if s.available %}(available){% else %}(booked){% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label>Patient ID:</label><br/>
+          <input name="patient_id" placeholder="p1" value="p1"/>
+        </div>
+
+        <div style="align-self:end;">
+          <button class="btn" type="submit">Book</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <h3>Slots</h3>
+  {% for s in slots %}
+    <div class="card row" style="justify-content:space-between; align-items:center;">
+      <div>
+        <b>{{ s.time }}</b>
+        {% if s.available %}
+          <span class="badge ok">available</span>
+        {% else %}
+          <span class="badge no">booked</span>
+        {% endif %}
+      </div>
+
+      {% if not s.available %}
+        <form method="post" action="/ui/cancel" style="margin:0;">
+          <input type="hidden" name="doctor_id" value="{{ doctor.id }}"/>
+          <input type="hidden" name="date" value="{{ date }}"/>
+          <input type="hidden" name="time" value="{{ s.time }}"/>
+          <button class="btn" type="submit">Cancel</button>
+        </form>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}

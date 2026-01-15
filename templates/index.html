@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Doctors</h2>
+  {% for d in doctors %}
+    <div class="card">
+      <div><b>{{ d.name }}</b></div>
+      <div><small>{{ d.specialty }}</small></div>
+      <div style="margin-top:8px;">
+        <a class="btn" href="/ui/doctor/{{ d.id }}">Open</a>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

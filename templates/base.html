@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ title or "Clinic UI" }}</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+  <h1><a href="/">Clinic UI</a></h1>
+  <p><small>API docs: <a href="/docs">/docs</a> • Health: <a href="/health">/health</a></small></p>
+  {% if message %}
+    <div class="card">{{ message }}</div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>

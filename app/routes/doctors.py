@@ -1,12 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.deps import get_db
+from app.models import Doctor
 
 router = APIRouter(prefix="/doctors", tags=["doctors"])
 
-DOCTORS = [
-    {"id": 1, "name": "Dr. Alice Carter", "specialty": "Cardiology"},
-    {"id": 2, "name": "Dr. Ben Novak", "specialty": "Dermatology"},
-]
-
 @router.get("")
-def list_doctors():
-    return DOCTORS
+def list_doctors(db: Session = Depends(get_db)):
+    doctors = db.query(Doctor).order_by(Doctor.id).all()
+    return [{"id": d.id, "name": d.name, "specialty": d.specialty} for d in doctors]

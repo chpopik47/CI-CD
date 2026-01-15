@@ -1,7 +1,3 @@
-permissions:
-  contents: read
-  packages: write
-
 name: CI
 
 on:
@@ -51,9 +47,9 @@ jobs:
         run: docker rm -f clinic-api
 
     publish-image:
-    runs-on: ubuntu-latest
-    needs: docker-smoke
-    if: github.ref == 'refs/heads/main'
+     runs-on: ubuntu-latest
+     needs: docker-smoke
+     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
       packages: write
